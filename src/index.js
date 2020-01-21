@@ -2,8 +2,8 @@ import express from 'express';
 import fetch from 'node-fetch-with-proxy';
 import cors from 'cors';
 
-
 const PORT = process.env.PORT || 80;
+const { TOKEN } = process.env;
 const app = express();
 app.use(cors({
   optionsSuccessStatus: 200,
@@ -20,4 +20,4 @@ app.get('/', async (req, res) => {
   return res.status(404).send({ success: false, body: '' });
 });
 
-app.listen(PORT, () => console.log('server is running...'));
+app.listen(PORT, () => console.log('server is running...', TOKEN));
