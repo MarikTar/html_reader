@@ -13,9 +13,13 @@ app.use(cors({
 app.get('/', async (req, res) => {
   const { href } = req.query;
   if (href) {
-    const data = await fetch(href);
-    const html = await data.text();
-    return res.status(200).send({ success: true, body: html });
+    try {
+      const data = await fetch(href);
+      const html = await data.text();
+      return res.status(200).send({ success: true, body: html });
+    } catch (error) {
+      return res.status(500).send({ success: false, body: '' });
+    }
   }
   return res.status(404).send({ success: false, body: '' });
 });
