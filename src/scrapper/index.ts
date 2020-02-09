@@ -111,6 +111,7 @@ export default class Scraper {
       this.progress = (this.compressStep / urls.length) * 100;
       await this.timeout(sec);
       await this.scrapURLs(urls, selector, concurrentQueries, sec);
+      console.warn(this.progress);
     }
     return this.compresedData;
   }
