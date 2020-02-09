@@ -75,6 +75,7 @@ app.post('/multiPages', async (req, res) => {
 
 app.get('/progress', (req, res) => {
   res.send(JSON.stringify({ progress: scrapper.progress, data: scrapper.compresedData }, censor));
+  console.log('Current memory usage: %j', process.memoryUsage());
   scrapper.clearData();
 });
 
