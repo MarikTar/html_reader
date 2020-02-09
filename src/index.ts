@@ -79,6 +79,7 @@ app.post('/arrURLs', async (req, res) => {
     try {
       console.log(selectors);
       const searchedInfo = await scrapper.scrapArrUrls(urls, selectors);
+      console.log('Current memory usage: %j', process.memoryUsage().rss / 1048576);
       return res.status(200).send(JSON.stringify({ searchedInfo }, censor));
     } catch (error) {
       console.log(error);
