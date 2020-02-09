@@ -7,6 +7,7 @@ import Scrapper from './scrapper';
 
 const PORT = process.env.PORT || 80;
 const app = express();
+const scrapper = new Scrapper();
 
 const censor = (key: string, value: HTMLElement) => {
   if (value.parentNode) {
@@ -43,10 +44,10 @@ app.post('/singlePage/', async (req, res) => {
   const selP = req.body;
   if (href) {
     try {
-      const scrapper = new Scrapper(href);
       const data = await fetch(href);
       const html = await data.text();
       const pageCount = scrapper.getNodeList(html, selP);
+      console.log('1');
       return res.status(200).send(JSON.stringify(pageCount, censor));
     } catch (error) {
       console.log(error);
@@ -59,18 +60,23 @@ app.post('/singlePage/', async (req, res) => {
 app.post('/multiPages', async (req, res) => {
   const { urls, selectors } = req.body;
   if (urls.length > 0) {
-    console.log(urls);
+    scrapper.clearProgress();
     try {
-      const scrapper = new Scrapper();
       console.log(selectors);
-      const pageCount = await scrapper.scrapURLs(urls, selectors);
-      return res.status(200).send(JSON.stringify(pageCount, censor));
+      scrapper.scrapURLs(urls, selectors);
+      return res.status(200).send(true);
     } catch (error) {
       console.log(error);
       return res.status(500).send(false);
     }
   }
   return res.status(404).send(false);
+});
+
+app.get('/progress', (req, res) => res.send({ progress: scrapper.progress }));
+
+app.get('/pull', (req, res) => {
+  return res.send(JSON.stringify({ data: scrapper.compresedData }, censor));
 });
 
 app.listen(PORT, () => console.log('server is running...', PORT));

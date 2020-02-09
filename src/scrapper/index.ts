@@ -92,10 +92,16 @@ export default class Scraper {
   //   return searchedInfo;
   // }
 
+  clearProgress() {
+    this.progress = 0;
+    this.compresedData = [];
+    this.compressStep = 0;
+  }
+
   async scrapURLs(
     urls: string[],
     selector: Record<string, string>,
-    concurrentQueries: number = 5,
+    concurrentQueries: number = 10,
     sec: number = 10,
   ): Promise<INodeList[]> {
     if (this.compressStep < urls.length && !this.stop) {
@@ -111,9 +117,9 @@ export default class Scraper {
       this.compresedData.push(searchedInfo);
       this.compressStep = res;
       this.progress = (this.compressStep / urls.length) * 100;
+      console.warn(this.progress);
       await this.timeout(sec);
       await this.scrapURLs(urls, selector, concurrentQueries, sec);
-      console.warn(this.progress);
     }
     return this.compresedData;
   }
