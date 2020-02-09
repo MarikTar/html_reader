@@ -1,5 +1,5 @@
 import fetch from 'node-fetch-with-proxy';
-import { parse, HTMLElement } from 'node-html-parser';
+import * as HTMLParser from 'node-html-parser';
 
 interface ISelector {
   [key: string]: {
@@ -9,12 +9,12 @@ interface ISelector {
   };
 }
 interface INodeList {
-  [key: string]: HTMLElement[];
+  [key: string]: HTMLParser.HTMLElement[];
 }
 
 export default class Scraper {
   listPages: string = '';
-  compresedData: HTMLElement[] = [];
+  compresedData: INodeList[] = [];
   baseUrl: string;
   progress: number = 0;
   stop: boolean = false;
@@ -57,7 +57,7 @@ export default class Scraper {
   getNodeList(HTML: string, selector: Record<string, string>): INodeList {
     const nodeList: INodeList = {};
     const keys = Object.keys(selector);
-    const elementHTML = parse(HTML) as HTMLElement;
+    const elementHTML = HTMLParser.parse(HTML) as HTMLParser.HTMLElement;
     keys.forEach((key) => {
       nodeList[key] = elementHTML.querySelectorAll(`${selector[key]}`);
     });
@@ -69,14 +69,15 @@ export default class Scraper {
   //   const keys = Object.keys(selector);
   //   const elementHTML = domParser.parseFromString(HTML, 'text/html');
   //   keys.forEach((key) => {
-  //     const nodeList = elementHTML.querySelectorAll(`${selector[key].selector}`) as NodeListOf<HTMLAnchorElement>;
+  //     const nodeList = elementHTML.querySelectorAll(`${selector[key].selector}`)
+  // as NodeListOf<HTMLAnchorElement>;
   //     console.log(selector[key].selector);
   //     console.log(selector[key].attr);
-      
+
   //     nodeList.forEach((node, i)  => {
   //       let info = node[selector[key].attr] as string;
   //       console.log(info);
-        
+
   //       // if (selector[key].subattr) {
   //       //   info = info[selector[key].subattr!];
   //       // }
@@ -94,7 +95,7 @@ export default class Scraper {
   async scrapURLs(urls: string[],
     selector: Record<string, string>,
     concurrentQueries: number = 10,
-    sec: number = 10): Promise<HTMLElement[]> {
+    sec: number = 10): Promise<INodeList[]> {
     if (this.compressStep < urls.length && !this.stop) {
       const res = concurrentQueries + this.compressStep;
       const temp: Promise<string>[] = [];
@@ -105,8 +106,7 @@ export default class Scraper {
       }
       const HTML = await Promise.all(temp);
       const searchedInfo = this.getNodeList(HTML.join('\n'), selector);
-      const keys = Object.keys(selector);
-      this.compresedData.push(...searchedInfo[keys[0]]);
+      this.compresedData.push(searchedInfo);
       this.compressStep = res;
       this.progress = (this.compressStep / urls.length) * 100;
       await this.timeout(sec);

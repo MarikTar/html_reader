@@ -1,6 +1,5 @@
 import express from 'express';
 import fetch from 'node-fetch-with-proxy';
-// import fetch from 'node-fetch';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { HTMLElement, Node } from 'node-html-parser';
@@ -11,6 +10,7 @@ const app = express();
 
 const censor = (key: string, value: HTMLElement) => {
   if (value.parentNode) {
+    // eslint-disable-next-line no-param-reassign
     value.parentNode = {} as Node;
   }
   return value;
@@ -58,7 +58,7 @@ app.post('/singlePage/', async (req, res) => {
 
 app.post('/singlePage/', async (req, res) => {
   const { href } = req.query;
-  const body = req.body;
+  const { body } = req;
   if (href) {
     try {
       const scrapper = new Scrapper(href);
