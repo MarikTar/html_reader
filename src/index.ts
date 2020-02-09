@@ -56,12 +56,12 @@ app.post('/singlePage/', async (req, res) => {
   return res.status(404).send(false);
 });
 
-app.post('/multiPages/', async (req, res) => {
-  const { href } = req.query;
+app.post('/multiPages', async (req, res) => {
   const { urls, selectors } = req.body;
-  if (href) {
+  if (urls.length > 0) {
+    console.log(urls);
     try {
-      const scrapper = new Scrapper(href);
+      const scrapper = new Scrapper();
       console.log(selectors);
       const pageCount = await scrapper.scrapURLs(urls, selectors);
       return res.status(200).send(JSON.stringify(pageCount, censor));

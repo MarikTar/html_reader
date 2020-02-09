@@ -92,10 +92,12 @@ export default class Scraper {
   //   return searchedInfo;
   // }
 
-  async scrapURLs(urls: string[],
+  async scrapURLs(
+    urls: string[],
     selector: Record<string, string>,
     concurrentQueries: number = 10,
-    sec: number = 10): Promise<INodeList[]> {
+    sec: number = 10,
+  ): Promise<INodeList[]> {
     if (this.compressStep < urls.length && !this.stop) {
       const res = concurrentQueries + this.compressStep;
       const temp: Promise<string>[] = [];
