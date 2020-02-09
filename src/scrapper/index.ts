@@ -77,7 +77,7 @@ export default class Scraper {
   async scrapURLs(
     urls: string[],
     selector: Record<string, string>,
-    concurrentQueries: number = 10,
+    concurrentQueries: number = 4,
     sec: number = 10,
   ): Promise<INodeList[]> {
     if (this.compressStep < urls.length && !this.stop) {
