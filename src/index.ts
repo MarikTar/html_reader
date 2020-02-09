@@ -73,7 +73,10 @@ app.post('/multiPages', async (req, res) => {
   return res.status(404).send(false);
 });
 
-app.get('/progress', (req, res) => res.send({ progress: scrapper.progress }));
+app.get('/progress', (req, res) => {
+  res.send({ progress: scrapper.progress, data: scrapper.compresedData });
+  scrapper.clearData();
+});
 
 app.get('/pull', (req, res) => {
   return res.send(JSON.stringify({ data: scrapper.compresedData }, censor));

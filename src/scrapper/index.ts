@@ -64,38 +64,14 @@ export default class Scraper {
     return nodeList;
   }
 
-  // searchInfo(HTML: string, selector: ISelector): Record<string, string>[] {
-  //   const searchedInfo: Record<string, string>[] = [];
-  //   const keys = Object.keys(selector);
-  //   const elementHTML = domParser.parseFromString(HTML, 'text/html');
-  //   keys.forEach((key) => {
-  //     const nodeList = elementHTML.querySelectorAll(`${selector[key].selector}`)
-  // as NodeListOf<HTMLAnchorElement>;
-  //     console.log(selector[key].selector);
-  //     console.log(selector[key].attr);
-
-  //     nodeList.forEach((node, i)  => {
-  //       let info = node[selector[key].attr] as string;
-  //       console.log(info);
-
-  //       // if (selector[key].subattr) {
-  //       //   info = info[selector[key].subattr!];
-  //       // }
-  //       if (searchedInfo[i]) {
-  //         searchedInfo[i][key] = info;
-  //       } else {
-  //         searchedInfo[i] = {};
-  //         searchedInfo[i][key] = info;
-  //       }
-  //     });
-  //   });
-  //   return searchedInfo;
-  // }
-
   clearProgress() {
     this.progress = 0;
     this.compresedData = [];
     this.compressStep = 0;
+  }
+
+  clearData() {
+    this.compresedData = [];
   }
 
   async scrapURLs(
