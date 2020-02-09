@@ -56,23 +56,6 @@ app.post('/singlePage/', async (req, res) => {
   return res.status(404).send(false);
 });
 
-app.post('/singlePage/', async (req, res) => {
-  const { href } = req.query;
-  const { body } = req;
-  if (href) {
-    try {
-      const scrapper = new Scrapper(href);
-      const html = await scrapper.getHTML();
-      const pageCount = scrapper.getNodeList(html, body);
-      return res.status(200).send(JSON.stringify(pageCount, censor));
-    } catch (error) {
-      console.log(error);
-      return res.status(500).send(false);
-    }
-  }
-  return res.status(404).send(false);
-});
-
 app.post('/multiPages/', async (req, res) => {
   const { href } = req.query;
   const { urls, selectors } = req.body;
