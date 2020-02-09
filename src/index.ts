@@ -73,14 +73,27 @@ app.post('/multiPages', async (req, res) => {
   return res.status(404).send(false);
 });
 
+app.post('/arrURLs', async (req, res) => {
+  const { urls, selectors } = req.body;
+  if (urls.length > 0) {
+    try {
+      console.log(selectors);
+      const searchedInfo = await scrapper.scrapArrUrls(urls, selectors);
+      return res.status(200).send(JSON.stringify({ searchedInfo }, censor));
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(false);
+    }
+  }
+  return res.status(404).send(false);
+});
+
 app.get('/progress', (req, res) => {
   res.send(JSON.stringify({ progress: scrapper.progress, data: scrapper.compresedData }, censor));
   console.log('Current memory usage: %j', process.memoryUsage().rss / 1048576);
   scrapper.clearData();
 });
 
-app.get('/pull', (req, res) => {
-  return res.send(JSON.stringify({ data: scrapper.compresedData }, censor));
-});
+app.get('/pull', (req, res) => res.send(JSON.stringify({ data: scrapper.compresedData }, censor)));
 
 app.listen(PORT, () => console.log('server is running...', PORT));

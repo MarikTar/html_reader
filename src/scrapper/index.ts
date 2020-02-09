@@ -100,6 +100,21 @@ export default class Scraper {
     return this.compresedData;
   }
 
+  async scrapArrUrls(
+    urls: string[],
+    selector: Record<string, string>,
+  ): Promise<INodeList> {
+    const temp: Promise<string>[] = [];
+    for (let i = 0; i < urls.length; i += 1) {
+      if (i < urls.length) {
+        temp.push(this.getHTML(urls[i]));
+      }
+    }
+    const HTML = await Promise.all(temp);
+    const searchedInfo = this.getNodeList(HTML.join('\n'), selector);
+    return searchedInfo;
+  }
+
   // async scrapURLsFor(urls: string[],
   //   selector: ISelector,
   //   concurrentQueries: number = 10,
