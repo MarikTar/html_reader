@@ -89,12 +89,4 @@ app.post('/arrURLs', async (req, res) => {
   return res.status(404).send(false);
 });
 
-app.get('/progress', (req, res) => {
-  res.send(JSON.stringify({ progress: scrapper.progress, data: scrapper.compresedData }, censor));
-  console.log('Current memory usage: %j', process.memoryUsage().rss / 1048576);
-  scrapper.clearData();
-});
-
-app.get('/pull', (req, res) => res.send(JSON.stringify({ data: scrapper.compresedData }, censor)));
-
 app.listen(PORT, () => console.log('server is running...', PORT));
