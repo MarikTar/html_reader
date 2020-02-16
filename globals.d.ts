@@ -1,1 +1,1 @@
-declare module "node-fetch-with-proxy";
+declare module 'node-fetch-with-proxy';

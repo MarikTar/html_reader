@@ -1,13 +1,6 @@
 import fetch from 'node-fetch-with-proxy';
 import * as HTMLParser from 'node-html-parser';
 
-interface ISelector {
-  [key: string]: {
-    selector: string,
-    attr: keyof HTMLAnchorElement,
-    subattr?: string
-  };
-}
 interface INodeList {
   [key: string]: HTMLParser.HTMLElement[];
 }

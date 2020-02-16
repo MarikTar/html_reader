@@ -33,6 +33,7 @@ app.get('/', async (req, res) => {
       const html = await data.text();
       return res.status(200).send({ success: true, body: html });
     } catch (error) {
+      console.log(error);
       return res.status(500).send({ success: false, body: '' });
     }
   }
